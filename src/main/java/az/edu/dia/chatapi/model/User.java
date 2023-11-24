@@ -3,12 +3,21 @@ package az.edu.dia.chatapi.model;
 // plain old java object - POJO
 public class User {
     
+    private long ID;
     private String username;
     private String profileAvatarUrl;
 
     public User(String username, String profileAvatarUrl) {
         this.username = username;
         this.profileAvatarUrl = profileAvatarUrl;
+    }
+
+    public long getID() {
+        return ID;
+    }
+
+    public void setID(long iD) {
+        ID = iD;
     }
 
     public String getUsername() {

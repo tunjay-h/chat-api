@@ -11,39 +11,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import az.edu.dia.chatapi.model.User;
+import az.edu.dia.chatapi.service.UserService;
 
 @CrossOrigin()
 @RestController
 @RequestMapping(path = "/api/users")
 public class UsersController {
 
-    private static final String profileServiceUrl = "https://api.dicebear.com/7.x/adventurer/png?seed=";
+    private UserService userService;
 
-    private List<User> allUsers = new ArrayList<>();
-
-    @GetMapping("/me") // => /api/users/me
-    public String sayHello() {
-        return "Hello World";
+    public UsersController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("") // => /api/users
     public List<User> getAllUsers() {
-        return allUsers;
+        return userService.getAllUsers();
     }
 
     @PostMapping("/{name}") // => /api/users/username
     public User createNewUser(@PathVariable() String name) throws Exception {
 
-        // check if username exists
-        for (User usr : allUsers) {
-            if (usr.getUsername().equals(name)) {
-                throw new Exception("username already taken");
-            }
-        }
-
-        User aUser = new User(name, profileServiceUrl + name);
-        allUsers.add(aUser);
-        return aUser;
+        User newUser = userService.saveUser(name);
+        return newUser;
     }
 
 }
